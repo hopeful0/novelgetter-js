@@ -4,10 +4,15 @@ var http = require('http');
 var htmlparser = require('htmlparser');
 var iconv = require('iconv-lite');
 
+var uid;
+var verify;
+
 /* GET home page. */
 router.get('/', function(req, res, next) {
 	var style = req.query.style;
 	var origin = req.cookies.origin;
+	uid = req.cookies.uid;
+	verify = req.cookies.verify;
 	switch (style) {
 		case 'page':  //页面
 			var url = req.query.url;
@@ -42,15 +47,18 @@ function htmlBuild_page_biquge(buffer, url) {
 	var dom = getdom(h);
 	var box_con = findByClassName(dom, 'box_con');
 	var bookname = findByClassName(box_con, 'bookname');
+	console.log(h);
 	var bottom = findByClassName(bookname, 'bottem1')[0].children;
 	bookname = findByTagName(bookname, 'h1')[0].children[0].data;
 	html += '<h2 align="center">' + bookname + '</h2>';
 	var bot = '<p align="center" style="font-size:18pt;">';
+	var bname = '';
+	var bookurl = '';
 	for (var i = 0; i < bottom.length; i ++) {
 		if(bottom[i].children) {
 			var b = bottom[i].children[0];
 			var link;
-			if(b.data == '上一章' || b.data == '下一章') {
+			if (b.data == '上一章' || b.data == '下一章') {
 				link = bottom[i].attribs.href;
 				if(link[0] == '/') {
 					link = '/get?style=contents&url=http://www.qu.la' + link;
@@ -58,9 +66,13 @@ function htmlBuild_page_biquge(buffer, url) {
 					link = '/get?style=page&url=' + url.substring(0, url.lastIndexOf('/')+1) + link;
 				}
 				bot += '<a href="' + link + '">' + b.data + '</a>';
-			} else if(b.data == '章节列表') {
-				link = '/get?style=contents&url=http://www.qu.la' + bottom[i].attribs.href;
+			} else if (b.data == '章节列表') {
+				bookurl = 'http://www.qu.la' + bottom[i].attribs.href;
+				link = '/get?style=contents&url='+bookurl;
 				bot += '&nbsp;&nbsp;<a href="' + link + '">' + b.data + '</a>&nbsp;&nbsp;';
+			} else if (b.data == '小说错误举报') {
+				bname = bottom[i].attribs.href;
+				bname = bname.substring(bname.indexOf('小说《') + 3, bname.indexOf('》章节名'));
 			}
 			/*
 			switch (b.data) {
@@ -94,6 +106,16 @@ function htmlBuild_page_biquge(buffer, url) {
 	h = h.substring(h.indexOf('</script>')+9, h.indexOf('</div>'));
 	html += '<div style="font-size:18pt;">' + h + '</div>';
 	html += bot;
+	//record the history
+	var record = {
+		uid: uid,
+		verify: verify,
+		bname: bname,
+		burl: bookurl,
+		cname: bookname,
+		curl: url
+	};
+	require('./users').recordHistory(record);
 	return html;
 }
 

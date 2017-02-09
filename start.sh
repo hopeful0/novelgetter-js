@@ -1,3 +1,3 @@
 #!/bin/bash
 
-forever start -al forever.log -o out.log -e err.log bin/www
+forever start -a --spinSleepTime 100 -l forever.log -o out.log -e err.log bin/www
