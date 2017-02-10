@@ -11,8 +11,12 @@ var pool = mysql.createPool({
 module.exports.conn = function(callback) {
 	pool.getConnection(function(err, connection) {
 		if(err) {
-			console.log('mysqlconn_error:'+err);
+			console.log('mysqlconn_connect_error:'+err);
 		}
 		callback(connection);
+		connection.end((err) => {
+			if (err) 
+				console.log('mysqlconn_end_error:'+err);
+		})
 	});
 }

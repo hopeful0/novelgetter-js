@@ -47,7 +47,6 @@ function htmlBuild_page_biquge(buffer, url) {
 	var dom = getdom(h);
 	var box_con = findByClassName(dom, 'box_con');
 	var bookname = findByClassName(box_con, 'bookname');
-	console.log(h);
 	var bottom = findByClassName(bookname, 'bottem1')[0].children;
 	bookname = findByTagName(bookname, 'h1')[0].children[0].data;
 	html += '<h2 align="center">' + bookname + '</h2>';
