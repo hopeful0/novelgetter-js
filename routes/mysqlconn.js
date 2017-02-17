@@ -14,7 +14,7 @@ module.exports.conn = function(callback) {
 			console.log('mysqlconn_connect_error:'+err);
 		}
 		callback(connection);
-		connection.end((err) => {
+		connection.release((err) => {
 			if (err) 
 				console.log('mysqlconn_end_error:'+err);
 		})
