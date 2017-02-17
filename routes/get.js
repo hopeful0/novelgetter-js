@@ -11,6 +11,9 @@ var verify;
 router.get('/', function(req, res, next) {
 	var style = req.query.style;
 	var origin = req.query.origin || req.cookies.origin;
+	if(|req.cookie.origin) {
+		res.cookie('origin', origin)
+	}
 	uid = req.cookies.uid;
 	verify = req.cookies.verify;
 	switch (style) {

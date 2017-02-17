@@ -67,8 +67,8 @@ function getHistories(uid, callback) {
 					var curl = results[i].chapter_url;
 					var origin = results[i].origin;
 					var date = results[i].date;
-					result += '<a href="/get?origin='+origin+'style=contents&url='+burl+'">'+bname+'</a> | ';
-					result += '<a href="/get?origin='+origin+'style=page&url='+curl+'">'+cname+'</a> | ';
+					result += '<a href="/get?origin='+origin+'&style=contents&url='+burl+'">'+bname+'</a> | ';
+					result += '<a href="/get?origin='+origin+'&style=page&url='+curl+'">'+cname+'</a> | ';
 					result += date+'<br />';
 				}
 				result += '</p>';
