@@ -119,7 +119,7 @@ module.exports.recordHistory = function(record) {
 		if(!result) return;
 		mysql.conn((conn) => {
 			var condition = 'where `user_id`='+record.uid+' && `book_url`="'+
-				record.burl+' && `origin`="'+record.origin+'" limit 1';
+				record.burl+'" && `origin`="'+record.origin+'" limit 1';
 			var insert = () => {
 				conn.query('insert into `histories` (`user_id`,`book_name`,'+
 					'`book_url`,`chapter_name`,`chapter_url`,`origin`) values ('+record.uid+',"'+
