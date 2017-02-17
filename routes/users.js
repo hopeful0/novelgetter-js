@@ -54,19 +54,20 @@ router.get('/login', function(req, res, next) {
 
 function getHistories(uid, callback) {
 	mysql.conn((conn) => {
-		conn.query('select * from `histories` where `user_id`='+uid+';',
+		conn.query('select * from `histories` where `user_id`='+uid+' order by `date`;',
 			(error, results, fields) => {
 				if (error || !results || results.length < 1)
 					return callback(error);
 				var result = '';
-				result += '<p>';
+				result += '<p>书名 | 章节名 | 日期<br />';
 				for (var i = 0; i < results.length; i++) {
 					var bname = results[i].book_name;
 					var burl = results[i].book_url;
 					var cname = results[i].chapter_name;
 					var curl = results[i].chapter_url;
 					result += '<a href="/get?style=contents&url='+burl+'">'+bname+'</a> | ';
-					result += '<a href="/get?style=page&url='+curl+'">'+cname+'</a><br />';
+					result += '<a href="/get?style=page&url='+curl+'">'+cname+'</a> | ';
+					result += results[i].date+'<br />';
 				}
 				result += '</p>';
 				callback(result);
