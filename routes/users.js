@@ -65,9 +65,11 @@ function getHistories(uid, callback) {
 					var burl = results[i].book_url;
 					var cname = results[i].chapter_name;
 					var curl = results[i].chapter_url;
-					result += '<a href="/get?style=contents&url='+burl+'">'+bname+'</a> | ';
-					result += '<a href="/get?style=page&url='+curl+'">'+cname+'</a> | ';
-					result += results[i].date+'<br />';
+					var origin = results[i].origin;
+					var date = results[i].date;
+					result += '<a href="/get?origin='+origin+'style=contents&url='+burl+'">'+bname+'</a> | ';
+					result += '<a href="/get?origin='+origin+'style=page&url='+curl+'">'+cname+'</a> | ';
+					result += date+'<br />';
 				}
 				result += '</p>';
 				callback(result);
@@ -117,11 +119,11 @@ module.exports.recordHistory = function(record) {
 		if(!result) return;
 		mysql.conn((conn) => {
 			var condition = 'where `user_id`='+record.uid+' && `book_url`="'+
-				record.burl+'" limit 1';
+				record.burl+' && `origin`="'+record.origin+'" limit 1';
 			var insert = () => {
 				conn.query('insert into `histories` (`user_id`,`book_name`,'+
-					'`book_url`,`chapter_name`,`chapter_url`) values ('+record.uid+',"'+
-					record.bname+'","'+record.burl+'","'+record.cname+'","'+record.curl+'")');
+					'`book_url`,`chapter_name`,`chapter_url`,`origin`) values ('+record.uid+',"'+
+					record.bname+'","'+record.burl+'","'+record.cname+'","'+record.curl+'","'+record.origin+'")');
 			};
 			var update = (index) => {
 				conn.query('update `histories` set `chapter_name`="'+record.cname+

@@ -10,7 +10,7 @@ var verify;
 /* GET home page. */
 router.get('/', function(req, res, next) {
 	var style = req.query.style;
-	var origin = req.cookies.origin;
+	var origin = req.query.origin || req.cookies.origin;
 	uid = req.cookies.uid;
 	verify = req.cookies.verify;
 	switch (style) {
@@ -112,7 +112,8 @@ function htmlBuild_page_biquge(buffer, url) {
 		bname: bname,
 		burl: bookurl,
 		cname: bookname,
-		curl: url
+		curl: url,
+		origin: 'biquge'
 	};
 	require('./users').recordHistory(record);
 	return html;

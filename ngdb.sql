@@ -27,9 +27,10 @@ CREATE TABLE `histories` (
   `user_id` int(4) NOT NULL,
   `book_name` char(128) COLLATE utf8mb4_unicode_ci NOT NULL,
   `book_url` char(128) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `chapter_url` char(128) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `chapter_name` char(128) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `chapter_url` char(128) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `origin` char(128) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`index`)
 ) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -77,4 +78,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2017-02-10 18:08:51
+-- Dump completed on 2017-02-17 19:57:06
